@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        // Define variables
-        DOCKER_IMAGE       = 'tuchsanai/fastapi-webhook:latest'
-        DOCKER_CREDENTIALS = credentials('dockerhub')
+        // Update to match your Docker Hub image
+        DOCKER_IMAGE       = 'ionelyxd/custom-nginx-registry:latest'
+        DOCKER_CREDENTIALS = credentials('DockerHub')
     }
 
     stages {
@@ -20,7 +20,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                     // Build the Docker image
-                    
                     dir('./03_Jenkins/week13/03_Github_webhook') {
                        sh 'echo "Running in $(pwd)"'
                        sh 'echo start build the Docker image = $DOCKER_IMAGE'
@@ -33,7 +32,6 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    
                     // Login to Docker Hub
                     sh 'echo $DOCKER_CREDENTIALS_PSW | docker login --username $DOCKER_CREDENTIALS_USR --password-stdin'
                     // Push the image
@@ -53,7 +51,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Deploy') {
             steps {
